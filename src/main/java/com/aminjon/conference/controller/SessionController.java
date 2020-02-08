@@ -2,9 +2,11 @@ package com.aminjon.conference.controller;
 
 import com.aminjon.conference.models.Session;
 import com.aminjon.conference.repositories.SessionRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -28,6 +30,30 @@ public class SessionController {
     @PostMapping
     public Session create(@RequestBody final Session session){
         return  sessionRepository.saveAndFlush(session);
+    }
+
+    @RequestMapping(value = "{id}",method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id,HttpServletResponse response) {
+
+        if (!sessionRepository.existsById(id)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        sessionRepository.deleteById(id);
+    }
+
+    @RequestMapping(value = "{id}",method = RequestMethod.PUT)
+    public Session update(@PathVariable Long id, @RequestBody Session session, HttpServletResponse response){
+        if (!sessionRepository.existsById(id)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+
+        Session existSession = sessionRepository.getOne(id);
+        BeanUtils.copyProperties(session,existSession,"session_id");
+
+        return sessionRepository.saveAndFlush(existSession);
+
     }
 
 
