@@ -1,6 +1,8 @@
 package com.aminjon.conference.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "speakers")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Speaker {
 
     @Id
@@ -23,6 +26,7 @@ public class Speaker {
     private byte[] speaker_photo;
 
     @ManyToMany(mappedBy = "speakers")
+    @JsonIgnore
     List<Session> sessions;
 
     public Speaker() {
