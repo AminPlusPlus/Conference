@@ -1,4 +1,4 @@
 # Conference
-Spring Boot Conference App
+Conference App APi
 
 https://conforence-spring.herokuapp.com/swagger-ui.html#
